@@ -136,8 +136,10 @@ export const calculateMetrics = (releases: VehicleRelease[]): DashboardMetrics =
     
     // Ranking de atendentes
     if (release.atendente) {
-      const current = atendentesMap.get(release.atendente) || { liberacoes: 0, valorTotal: 0 };
-      atendentesMap.set(release.atendente, {
+      // Pegar apenas o primeiro nome
+      const primeiroNome = release.atendente.trim().split(' ')[0];
+      const current = atendentesMap.get(primeiroNome) || { liberacoes: 0, valorTotal: 0 };
+      atendentesMap.set(primeiroNome, {
         liberacoes: current.liberacoes + 1,
         valorTotal: current.valorTotal + release.valorTotal,
       });

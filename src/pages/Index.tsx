@@ -57,10 +57,10 @@ const Index = () => {
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-6">
           <h1 className="text-3xl font-bold text-primary">
-            Dashboard Financeiro - Pátio de Apreensão
+            Pátio SBC
           </h1>
           <p className="text-muted-foreground mt-1">
-            Relatório mensal de liberações de veículos
+            Dashboard Financeiro - Relatório mensal de liberações de veículos
           </p>
         </div>
       </header>
