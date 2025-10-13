@@ -44,4 +44,16 @@ export interface DashboardMetrics {
     liberacoes: number;
     valorTotal: number;
   }>;
+  notas: {
+    totalComNota: number;
+    totalSemNota: number;
+    processosSemNota: Array<{
+      processo: string;
+      marca: string;
+      modelo: string;
+      valorTotal: number;
+      base: string;
+      dia: number;
+    }>;
+  };
 }

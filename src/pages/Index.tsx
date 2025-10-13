@@ -4,6 +4,7 @@ import { MetricCard } from "@/components/dashboard/MetricCard";
 import { AttendantRanking } from "@/components/dashboard/AttendantRanking";
 import { PaymentMethodsChart } from "@/components/dashboard/PaymentMethodsChart";
 import { BaseComparisonChart } from "@/components/dashboard/BaseComparisonChart";
+import { ProcessosSemNota } from "@/components/dashboard/ProcessosSemNota";
 import { parseExcelData, calculateMetrics } from "@/utils/excelParser";
 import { DashboardMetrics } from "@/types/financial";
 import { 
@@ -12,7 +13,8 @@ import {
   MapPin, 
   Shield, 
   ClipboardCheck,
-  Banknote 
+  Banknote,
+  FileText
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -109,7 +111,16 @@ const Index = () => {
                 icon={ClipboardCheck}
                 variant="info"
               />
+              <MetricCard
+                title="📄 Notas Emitidas"
+                value={`${metrics.notas.totalComNota} / ${metrics.notas.totalComNota + metrics.notas.totalSemNota}`}
+                icon={FileText}
+                variant={metrics.notas.totalSemNota === 0 ? "success" : "warning"}
+              />
             </div>
+            
+            {/* Processos sem nota */}
+            <ProcessosSemNota processos={metrics.notas.processosSemNota} />
 
             {/* Charts */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">

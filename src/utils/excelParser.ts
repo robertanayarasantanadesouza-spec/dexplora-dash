@@ -109,6 +109,11 @@ export const calculateMetrics = (releases: VehicleRelease[]): DashboardMetrics =
       cartaoCredito: 0,
     },
     rankingAtendentes: [],
+    notas: {
+      totalComNota: 0,
+      totalSemNota: 0,
+      processosSemNota: [],
+    },
   };
   
   const atendentesMap = new Map<string, { liberacoes: number; valorTotal: number }>();
@@ -142,6 +147,25 @@ export const calculateMetrics = (releases: VehicleRelease[]): DashboardMetrics =
       atendentesMap.set(primeiroNome, {
         liberacoes: current.liberacoes + 1,
         valorTotal: current.valorTotal + release.valorTotal,
+      });
+    }
+    
+    // Controle de notas fiscais
+    const temNota = release.rpsNumero && 
+                    release.rpsNumero.trim() !== '' && 
+                    release.rpsNumero.toUpperCase() !== 'ISENTO';
+    
+    if (temNota) {
+      metrics.notas.totalComNota++;
+    } else {
+      metrics.notas.totalSemNota++;
+      metrics.notas.processosSemNota.push({
+        processo: release.processo,
+        marca: release.marca,
+        modelo: release.modelo,
+        valorTotal: release.valorTotal,
+        base: release.base,
+        dia: release.dia,
       });
     }
   });
