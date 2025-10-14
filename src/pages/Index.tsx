@@ -118,9 +118,6 @@ const Index = () => {
                 variant={metrics.notas.totalSemNota === 0 ? "success" : "warning"}
               />
             </div>
-            
-            {/* Processos sem nota */}
-            <ProcessosSemNota processos={metrics.notas.processosSemNota} />
 
             {/* Charts */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -128,6 +125,9 @@ const Index = () => {
               <PaymentMethodsChart data={metrics.formasPagamento} />
               <BaseComparisonChart data={metrics.totalPorBase} />
             </div>
+            
+            {/* Processos sem nota */}
+            <ProcessosSemNota processos={metrics.notas.processosSemNota} />
 
             {/* Upload another file button */}
             <div className="flex justify-center pt-8">

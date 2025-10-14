@@ -49,6 +49,16 @@ export const parseExcelData = async (file: File): Promise<VehicleRelease[]> => {
             // Ignorar linhas vazias ou de totais
             if (!row[0] || row[0].toString().includes('Total')) return;
             
+            // Extrair dia da DATA LIBERAÇÃO
+            const dataLiberacao = row[20]?.toString() || '';
+            let dia = 0;
+            if (dataLiberacao) {
+              const dateMatch = dataLiberacao.match(/(\d{1,2})\/(\d{1,2})(\/(\d{2,4}))?/);
+              if (dateMatch) {
+                dia = parseInt(dateMatch[1], 10);
+              }
+            }
+            
             const release: VehicleRelease = {
               base: row[0]?.toString() || '',
               processo: row[1]?.toString() || '',
@@ -69,8 +79,8 @@ export const parseExcelData = async (file: File): Promise<VehicleRelease[]> => {
               atendente: row[16]?.toString() || '',
               idPix: row[17]?.toString() || '',
               rpsNumero: row[18]?.toString() || '',
-              dataLiberacao: row[19]?.toString() || '',
-              dia: index + 1,
+              dataLiberacao: dataLiberacao,
+              dia: dia,
             };
             
             if (release.valorTotal > 0) {

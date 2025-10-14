@@ -21,8 +21,8 @@ export const PaymentMethodsChart = ({ data }: PaymentMethodsChartProps) => {
   const chartData = [
     { name: "Dinheiro", value: data.dinheiro, color: COLORS.dinheiro },
     { name: "Pix", value: data.pix, color: COLORS.pix },
-    { name: "Transferência", value: data.transferencia, color: COLORS.transferencia },
-    { name: "Cartão Crédito (Estorno)", value: data.cartaoCredito, color: COLORS.cartaoCredito },
+    { name: "Transfer.", value: data.transferencia, color: COLORS.transferencia },
+    { name: "Cartão", value: data.cartaoCredito, color: COLORS.cartaoCredito },
   ].filter(item => item.value > 0);
 
   const formatCurrency = (value: number) => {
