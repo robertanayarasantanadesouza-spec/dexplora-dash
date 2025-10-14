@@ -27,6 +27,10 @@ export const parseExcelData = async (file: File): Promise<VehicleRelease[]> => {
           const worksheet = workbook.Sheets[sheetName];
           const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
           
+          // Extrair o dia do nome da aba (ex: "DIA 01", "01", "Dia 1", etc)
+          const diaMatch = sheetName.match(/\d+/);
+          const diaAba = diaMatch ? parseInt(diaMatch[0], 10) : index + 1;
+          
           // Encontrar a linha do cabeçalho
           let headerRow = -1;
           for (let i = 0; i < Math.min(5, jsonData.length); i++) {
@@ -49,15 +53,7 @@ export const parseExcelData = async (file: File): Promise<VehicleRelease[]> => {
             // Ignorar linhas vazias ou de totais
             if (!row[0] || row[0].toString().includes('Total')) return;
             
-            // Extrair dia da DATA LIBERAÇÃO
             const dataLiberacao = row[20]?.toString() || '';
-            let dia = 0;
-            if (dataLiberacao) {
-              const dateMatch = dataLiberacao.match(/(\d{1,2})\/(\d{1,2})(\/(\d{2,4}))?/);
-              if (dateMatch) {
-                dia = parseInt(dateMatch[1], 10);
-              }
-            }
             
             const release: VehicleRelease = {
               base: row[0]?.toString() || '',
@@ -80,7 +76,7 @@ export const parseExcelData = async (file: File): Promise<VehicleRelease[]> => {
               idPix: row[17]?.toString() || '',
               rpsNumero: row[18]?.toString() || '',
               dataLiberacao: dataLiberacao,
-              dia: dia,
+              dia: diaAba,
             };
             
             if (release.valorTotal > 0) {

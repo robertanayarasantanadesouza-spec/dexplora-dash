@@ -7,6 +7,7 @@ import { BaseComparisonChart } from "@/components/dashboard/BaseComparisonChart"
 import { ProcessosSemNota } from "@/components/dashboard/ProcessosSemNota";
 import { parseExcelData, calculateMetrics } from "@/utils/excelParser";
 import { DashboardMetrics } from "@/types/financial";
+import { Button } from "@/components/ui/button";
 import { 
   DollarSign, 
   TrendingUp, 
@@ -14,7 +15,8 @@ import {
   Shield, 
   ClipboardCheck,
   Banknote,
-  FileText
+  FileText,
+  Printer
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -53,6 +55,36 @@ const Index = () => {
     }).format(value);
   };
 
+  const handlePrintDashboard = () => {
+    const printContent = document.getElementById('dashboard-content');
+    const notasSection = document.getElementById('notas-pendentes');
+    
+    if (printContent && notasSection) {
+      // Ocultar temporariamente a seção de notas pendentes
+      notasSection.style.display = 'none';
+      
+      window.print();
+      
+      // Restaurar a seção de notas pendentes
+      notasSection.style.display = 'block';
+    }
+  };
+
+  const handlePrintNotas = () => {
+    const notasSection = document.getElementById('notas-pendentes');
+    const dashboardContent = document.getElementById('dashboard-content');
+    
+    if (notasSection && dashboardContent) {
+      // Ocultar temporariamente o dashboard
+      dashboardContent.style.display = 'none';
+      
+      window.print();
+      
+      // Restaurar o dashboard
+      dashboardContent.style.display = 'block';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -73,8 +105,22 @@ const Index = () => {
           <FileUploader onFileSelect={handleFileSelect} isLoading={isLoading} />
         ) : (
           <div className="space-y-8">
-            {/* KPIs */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {/* Botões de Impressão */}
+            <div className="flex gap-4 justify-end no-print">
+              <Button onClick={handlePrintDashboard} variant="outline" className="gap-2">
+                <Printer className="h-4 w-4" />
+                Imprimir Dashboard
+              </Button>
+              <Button onClick={handlePrintNotas} variant="outline" className="gap-2">
+                <Printer className="h-4 w-4" />
+                Imprimir Pendências
+              </Button>
+            </div>
+
+            {/* Dashboard Content */}
+            <div id="dashboard-content">
+              {/* KPIs */}
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               <MetricCard
                 title="💰 Lucro Total"
                 value={formatCurrency(metrics.totalLucro)}
@@ -117,20 +163,23 @@ const Index = () => {
                 icon={FileText}
                 variant={metrics.notas.totalSemNota === 0 ? "success" : "warning"}
               />
-            </div>
+              </div>
 
-            {/* Charts */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              <AttendantRanking data={metrics.rankingAtendentes} />
-              <PaymentMethodsChart data={metrics.formasPagamento} />
-              <BaseComparisonChart data={metrics.totalPorBase} />
+              {/* Charts */}
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <AttendantRanking data={metrics.rankingAtendentes} />
+                <PaymentMethodsChart data={metrics.formasPagamento} />
+                <BaseComparisonChart data={metrics.totalPorBase} />
+              </div>
             </div>
             
             {/* Processos sem nota */}
-            <ProcessosSemNota processos={metrics.notas.processosSemNota} />
+            <div id="notas-pendentes">
+              <ProcessosSemNota processos={metrics.notas.processosSemNota} />
+            </div>
 
             {/* Upload another file button */}
-            <div className="flex justify-center pt-8">
+            <div className="flex justify-center pt-8 no-print">
               <button
                 onClick={() => setMetrics(null)}
                 className="text-primary hover:underline text-sm font-medium"
