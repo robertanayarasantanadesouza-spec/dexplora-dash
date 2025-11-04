@@ -149,20 +149,20 @@ All colors MUST be HSL.
     -webkit-print-color-adjust: exact;
   }
 
-  * {
-    overflow: visible !important;
-    page-break-inside: avoid !important;
-  }
-
   main {
-    transform: scale(0.7);
+    transform: scale(0.65);
     transform-origin: top left;
-    width: 142.857%;
-    height: auto !important;
-    page-break-after: avoid !important;
+    width: 153.846%;
+    height: fit-content !important;
   }
 
-  .grid {
-    page-break-inside: avoid !important;
+  * {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  body, main, div {
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
   }
 }
