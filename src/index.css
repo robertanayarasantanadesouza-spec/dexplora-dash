@@ -141,11 +141,28 @@ All colors MUST be HSL.
   
   @page {
     size: A4 landscape;
-    margin: 1cm;
+    margin: 0.5cm;
   }
   
   body {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+  }
+
+  * {
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+  }
+
+  main {
+    transform: scale(0.7);
+    transform-origin: top left;
+    width: 142.857%;
+    height: auto !important;
+    page-break-after: avoid !important;
+  }
+
+  .grid {
+    page-break-inside: avoid !important;
   }
 }
